@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: passports
+  labels:
+    app: passports
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: passports
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+  template:
+    metadata:
+      labels:
+        app: passports
+    spec:
+      containers:
+        - name: passports
+          image: fdeaglio/passports
+          envFrom:
+            - configMapRef:
+                name: passports-configmap
+            - secretRef:
+                name: passports-secret
