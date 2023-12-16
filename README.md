@@ -1,4 +1,4 @@
 
 # Italian Passport Bot
 
-![System Architecture](assets/System.svg)
+![System Architecture](assets/System.png)
