@@ -72,3 +72,25 @@ class AvailabilitiesDB(PassportDB):
         cursor.close()
 
         return new_availabilities
+
+    def get_slots_available_before(self, province, join_time) -> list[dict]:
+        query = f"""SELECT o.name, o.address, o.city, a.day, a.hour, a.slots 
+        FROM availabilities AS a, office AS o 
+        WHERE a.office_id=o.office_id and a.discovered_timestamp < {join_time} and a.available='1' and o.province_shortcut='{province}' 
+        ORDER BY o.name, a.day, a.hour;"""
+
+        cursor = self.connection.cursor()
+
+        cursor.execute(query)
+
+        return [
+            {
+                "name": el[0],
+                "address": el[1],
+                "city": el[2],
+                "day": el[3],
+                "hour": el[4],
+                "slots": el[5],
+            }
+            for el in cursor.fetchall()
+        ]

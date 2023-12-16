@@ -30,3 +30,10 @@ class QueueProducer:
         self.connection.close()
         self.channel = None
         self.connection = None
+
+    def __enter__(self):
+        self.open_connection()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print(exc_type, exc_val, exc_tb)
+        self.close_connection()

@@ -11,8 +11,10 @@ from telegram.ext import (
 
 from configuration import get_province, get_intro_markup_and_text, get_region
 from databases.user_db import UserDB
+from queues.queue_producer import QueueProducer
 
-user_db = UserDB()
+user_queue = QueueProducer("new_user")
+
 
 # Enable logging
 logging.basicConfig(
@@ -115,11 +117,17 @@ async def end_and_persist(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         update.callback_query.from_user.id,
         update.callback_query.data.split(":")[1],
     )
+
+    user_queue.open_connection()
+    user_queue.publish_new_message(
+        {"chat_id": user, "province": province, "operation": "INSERT"}
+    )
+    user_queue.close_connection()
+
     query = update.callback_query
     await query.answer()
     await query.edit_message_text(text=f"Scelta salvata: Aggiunta Provincia {province}")
 
-    user_db.insert_new_user(user, province)
     return ConversationHandler.END
 
 
@@ -139,7 +147,12 @@ async def remove_province(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     await query.answer()
     await query.edit_message_text(text=f"Scelta salvata: Rimossa provincia {province}")
 
-    user_db.remove_user_province(user, province)
+    user_queue.open_connection()
+    user_queue.publish_new_message(
+        {"chat_id": user, "province": province, "operation": "REMOVE"}
+    )
+    user_queue.close_connection()
+
     return ConversationHandler.END
 
 

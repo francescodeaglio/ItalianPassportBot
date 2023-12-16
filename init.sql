@@ -8,7 +8,7 @@ USE passport;
 CREATE TABLE user (
     chat_id INT NOT NULL,
     province VARCHAR(3) NOT NULL,
-    active TINYINT(1) NOT NULL,
+    join_time INT NOT NULL,
     primary key (chat_id, province)
 );
 
@@ -22,6 +22,7 @@ CREATE TABLE office (
     name VARCHAR(200) NOT NULL,
     address VARCHAR(200) NOT NULL,
     province VARCHAR(64) NOT NULL,
+    province_shortcut VARCHAR(2) NOT NULL,
     time VARCHAR(5) NOT NULL
 );
 

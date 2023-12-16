@@ -1,3 +1,5 @@
+import time
+
 from databases.passport_db import PassportDB
 
 
@@ -15,7 +17,7 @@ class UserDB(PassportDB):
         self.connection.commit()
         cursor = self.connection.cursor()
 
-        cursor.execute("SELECT DISTINCT province FROM user WHERE active=1")
+        cursor.execute("SELECT DISTINCT province FROM user")
 
         result = [entry[0] for entry in cursor.fetchall()]
         cursor.close()
@@ -25,28 +27,37 @@ class UserDB(PassportDB):
         self.connection.commit()
         cursor = self.connection.cursor()
 
-        cursor.execute(
-            f"SELECT province FROM user WHERE active=1 and chat_id={chat_id}"
-        )
+        cursor.execute(f"SELECT province FROM user WHERE chat_id={chat_id}")
 
         result = [entry[0] for entry in cursor.fetchall()]
         cursor.close()
         return result
 
-    def insert_new_user(self, chat_id: int, province: str) -> None:
+    def insert_new_user(self, chat_id: int, province: str) -> int:
         cursor = self.connection.cursor()
+        join_time = int(time.time())
         cursor.execute(
-            f"INSERT INTO user (chat_id, province, active) values ({chat_id},'{province}',1) "
+            f"INSERT INTO user (chat_id, province, join_time) values ({chat_id},'{province}',{join_time}) "
         )
         self.connection.commit()
         cursor.close()
 
-    def remove_user_province(self, user, province):
+        return join_time
+
+    def remove_user_province(self, user: int, province: str):
         cursor = self.connection.cursor()
 
         cursor.execute(
             f"DELETE FROM user WHERE province='{province}' and chat_id={user}"
         )
+
+        self.connection.commit()
+        cursor.close()
+
+    def remove_user_all_provinces(self, chat_id: int) -> None:
+        cursor = self.connection.cursor()
+
+        cursor.execute(f"DELETE FROM user WHERE  chat_id={chat_id}")
 
         self.connection.commit()
         cursor.close()
