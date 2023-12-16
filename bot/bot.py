@@ -40,7 +40,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 async def start_over(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-
     if update.callback_query is None or update.callback_query.from_user is None:
         return 0
 
@@ -105,10 +104,11 @@ async def final_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 
 async def end_and_persist(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-
-    if (update.callback_query is None or
-            update.callback_query.from_user is None or
-            update.callback_query.data is None):
+    if (
+        update.callback_query is None
+        or update.callback_query.from_user is None
+        or update.callback_query.data is None
+    ):
         return ConversationHandler.END
 
     user, province = (
@@ -124,10 +124,11 @@ async def end_and_persist(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 
 async def remove_province(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-
-    if (update.callback_query is None or
-            update.callback_query.from_user is None or
-            update.callback_query.data is None):
+    if (
+        update.callback_query is None
+        or update.callback_query.from_user is None
+        or update.callback_query.data is None
+    ):
         return ConversationHandler.END
 
     user, province = (

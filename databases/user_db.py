@@ -2,7 +2,6 @@ from databases.passport_db import PassportDB
 
 
 class UserDB(PassportDB):
-
     def get_all_chat_ids_for_province(self, province: str) -> list[int]:
         cursor = self.connection.cursor()
 

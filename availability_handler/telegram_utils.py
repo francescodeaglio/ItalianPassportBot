@@ -1,8 +1,6 @@
 def telegram_message_builder(query_entry: dict, new_availabilities: list) -> str:
     date = "/".join(query_entry["date"].split("T")[0].split("-")[::-1])
-    day_availabilities = "\n".join(
-        map(lambda d: day_builder(d), new_availabilities)
-    )
+    day_availabilities = "\n".join(map(lambda d: day_builder(d), new_availabilities))
     return f"""
 Nuova disponibilità:
 Prima Data: {date}

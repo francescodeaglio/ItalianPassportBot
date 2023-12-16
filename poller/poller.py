@@ -25,10 +25,7 @@ def main():
                     at_lest_one_message_sent = True
                     queue_producer.open_connection()
                 queue_producer.publish_new_message(
-                    {
-                        "province": province,
-                        "availability": entry
-                    }
+                    {"province": province, "availability": entry}
                 )
 
         if at_lest_one_message_sent:

@@ -19,8 +19,10 @@ def get_intro_markup_and_text(user_id: int) -> tuple[InlineKeyboardMarkup, str]:
             " notifiche da una provincia o aggiungerne di nuove."
         )
     else:
-        text_message = ("Premi sul bottone sottostante per"
-                        " ricevere gli aggiornamenti per la tua provincia.")
+        text_message = (
+            "Premi sul bottone sottostante per"
+            " ricevere gli aggiornamenti per la tua provincia."
+        )
 
     keyboard = [
         InlineKeyboardButton("Aggiungi nuova provincia", callback_data="new")
@@ -76,10 +78,11 @@ def read_region() -> list:
         return sorted(set(entry["regione"] for entry in data))
 
 
-def create_n_col_layout(keyboard: list[InlineKeyboardButton], n: int)\
-        -> list[list[InlineKeyboardButton]]:
+def create_n_col_layout(
+    keyboard: list[InlineKeyboardButton], n: int
+) -> list[list[InlineKeyboardButton]]:
     new_keyboard = []
-    current_row : list[InlineKeyboardButton] = []
+    current_row: list[InlineKeyboardButton] = []
     counter = 0
 
     for element in keyboard:

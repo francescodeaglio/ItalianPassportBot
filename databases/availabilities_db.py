@@ -14,7 +14,6 @@ def check_existing_availability(cursor, office_id, day, hour):
 
 
 class AvailabilitiesDB(PassportDB):
-
     def set_no_longer_available_entries(self, query_entry):
         office_id = query_entry["office_id"]
 

@@ -19,7 +19,6 @@ def populate_office_db() -> None:
 
 
 class OfficeDB(PassportDB):
-
     def insert_new_office(self, office_entry: dict) -> None:
         print(office_entry)
         office_id = office_entry["id"]

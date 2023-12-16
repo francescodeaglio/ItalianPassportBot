@@ -7,7 +7,7 @@ from requests.structures import CaseInsensitiveDict
 
 
 def _get_headers() -> CaseInsensitiveDict:
-    headers : CaseInsensitiveDict = CaseInsensitiveDict()
+    headers: CaseInsensitiveDict = CaseInsensitiveDict()
     headers["Accept"] = "application/json"
     headers["Host"] = "passaportonline.poliziadistato.it"
     headers["Content-Type"] = "application/json"
@@ -59,8 +59,10 @@ class PassportWebsiteQuery:
             "https://passaportonline.poliziadistato.it/cittadino/a/rc/v1/appuntamento"
             "/elenca-sede-prima-disponibilita"
         )
-        self.query_url_agenda = ("https://passaportonline.poliziadistato.it/cittadino/n/rc/v1/utility/elenca-agenda"
-                                 "-appuntamenti-sede-mese")
+        self.query_url_agenda = (
+            "https://passaportonline.poliziadistato.it/cittadino/n/rc/v1/utility/elenca-agenda"
+            "-appuntamenti-sede-mese"
+        )
         self.query_header = _get_headers()
 
     def get_availability_province(self, province: str) -> Optional[list[dict]]:
@@ -107,10 +109,10 @@ class PassportWebsiteQuery:
         office_request = (
             '{"sede":'
             + json.dumps(office)
-            + ',"dataRiferimento":"' + office["dataPrimaDisponibilitaResidenti"] + '","indietro":false}'
+            + ',"dataRiferimento":"'
+            + office["dataPrimaDisponibilitaResidenti"]
+            + '","indietro":false}'
         )
-
-
 
         resp = requests.post(
             self.query_url_agenda, headers=self.query_header, data=office_request
@@ -118,16 +120,15 @@ class PassportWebsiteQuery:
 
         print(json.loads(resp.content))
 
-
         if resp.status_code != 200:
             print(f"Error, code {resp.status_code}")
             return None
 
         availabilities = json.loads(resp.content)["elenco"]
-        #availabilities = filter(
+        # availabilities = filter(
         #    lambda day: day["totAppuntamentiPresi"] < day["totAppuntamenti"],
         #    availabilities,
-        #)
+        # )
 
         parsed = [
             {

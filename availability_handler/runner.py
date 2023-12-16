@@ -11,10 +11,9 @@ def main():
     avail_handler = AvailHandler()
 
     def process_new_availability_callback(ch, method, properties, body):
-
         avail_handler.handle_new_availability(body)
         ch.basic_ack(delivery_tag=method.delivery_tag)
-        #ch.basic_nack(delivery_tag=method.delivery_tag)
+        # ch.basic_nack(delivery_tag=method.delivery_tag)
 
     channel.basic_consume(
         queue="new_availability", on_message_callback=process_new_availability_callback
