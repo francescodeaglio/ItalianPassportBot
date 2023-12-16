@@ -10,12 +10,12 @@ class QueueProducer:
         self.connection = None
         self.channel = None
 
-    def publish_new_message(self, availability):
+    def publish_new_message(self, message):
         assert self.connection is not None
         self.channel.basic_publish(
             exchange="",
             routing_key=self.queue_name,
-            body=json.dumps(availability),
+            body=json.dumps(message),
             properties=pika.BasicProperties(
                 delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
             )
