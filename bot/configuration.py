@@ -32,6 +32,15 @@ def get_intro_markup_and_text(user_id: int) -> tuple[InlineKeyboardMarkup, str]:
         )
         for prov in already_subscribed
     ]
+
+    if len(already_subscribed) > 1:
+        # more than one subscribed province
+        keyboard.append(
+            InlineKeyboardButton(
+                f"Rimuovi tutte le province", callback_data=f"removeall"
+            )
+        )
+
     styled_keyboard = create_n_col_layout(keyboard, n=1)
 
     return InlineKeyboardMarkup(styled_keyboard), text_message

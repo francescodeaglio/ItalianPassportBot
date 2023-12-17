@@ -57,7 +57,8 @@ class UserDB(PassportDB):
     def remove_user_all_provinces(self, chat_id: int) -> None:
         cursor = self.connection.cursor()
 
-        cursor.execute(f"DELETE FROM user WHERE  chat_id={chat_id}")
+        print(chat_id)
+        cursor.execute(f"DELETE FROM user WHERE chat_id={chat_id}")
 
         self.connection.commit()
         cursor.close()

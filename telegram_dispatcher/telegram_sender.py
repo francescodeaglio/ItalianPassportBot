@@ -10,10 +10,9 @@ class TelegramSender:
 
     def send_message(self, body: bytes) -> bool:
         entry = json.loads(body)
-        print(entry)
-        chat_id, message = entry["chat_id"], entry["content"]
 
-        print(message)
+        chat_id, message = entry["chat_id"], entry["content"]
+        print("SENDING TO ", chat_id, entry)
 
         success = self._send_message(chat_id, message)
 

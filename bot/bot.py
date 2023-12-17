@@ -15,7 +15,6 @@ from queues.queue_producer import QueueProducer
 
 user_queue = QueueProducer("new_user")
 
-
 # Enable logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -107,9 +106,9 @@ async def final_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 async def end_and_persist(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     if (
-        update.callback_query is None
-        or update.callback_query.from_user is None
-        or update.callback_query.data is None
+            update.callback_query is None
+            or update.callback_query.from_user is None
+            or update.callback_query.data is None
     ):
         return ConversationHandler.END
 
@@ -133,9 +132,9 @@ async def end_and_persist(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 async def remove_province(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     if (
-        update.callback_query is None
-        or update.callback_query.from_user is None
-        or update.callback_query.data is None
+            update.callback_query is None
+            or update.callback_query.from_user is None
+            or update.callback_query.data is None
     ):
         return ConversationHandler.END
 
@@ -150,6 +149,29 @@ async def remove_province(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     user_queue.open_connection()
     user_queue.publish_new_message(
         {"chat_id": user, "province": province, "operation": "REMOVE"}
+    )
+    user_queue.close_connection()
+
+    return ConversationHandler.END
+
+
+async def remove_all_provinces(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    if (
+            update.callback_query is None
+            or update.callback_query.from_user is None
+            or update.callback_query.data is None
+    ):
+        return ConversationHandler.END
+
+    user = update.callback_query.from_user.id
+
+    query = update.callback_query
+    await query.answer()
+    await query.edit_message_text(text=f"Scelta salvata: Rimosse tutte le province")
+
+    user_queue.open_connection()
+    user_queue.publish_new_message(
+        {"chat_id": user, "province": None, "operation": "REMOVE ALL"}
     )
     user_queue.close_connection()
 
@@ -178,7 +200,8 @@ def main() -> None:
                 CallbackQueryHandler(select_province, pattern="^region"),
                 CallbackQueryHandler(select_region, pattern="^new$"),
                 CallbackQueryHandler(final_confirmation, pattern="^province"),
-                CallbackQueryHandler(remove_province, pattern="^remove"),
+                CallbackQueryHandler(remove_province, pattern="^remove:"),
+                CallbackQueryHandler(remove_all_provinces, pattern="^removeall$")
             ],
             1: [
                 CallbackQueryHandler(start_over, pattern="^restart$"),

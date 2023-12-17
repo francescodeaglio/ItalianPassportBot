@@ -13,6 +13,7 @@ class UserHandler:
         self.message_queue = QueueProducer("message")
 
     def handle_new_user(self, body):
+        self.user_db_connection.connection.commit()
         user = json.loads(body)
         print(user)
         chat_id = user["chat_id"]

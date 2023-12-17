@@ -16,6 +16,10 @@ class AvailHandler:
         entry = json.loads(body)
         print(entry)
         availability_dict, province = entry["availability"], entry["province"]
+
+        if availability_dict["availabilities"] is None:
+            return
+
         new_availabilities = self.avail_db_connection.insert_new_availability(
             availability_dict
         )
