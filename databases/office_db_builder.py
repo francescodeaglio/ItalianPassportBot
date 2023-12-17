@@ -15,6 +15,8 @@ def populate_office_db() -> None:
         for province in provinces:
             resp = pwc.query_province(province)
 
+            if resp == []:
+                print(f"Nothing for {province}")
             for el in resp:
                 office_db.insert_new_office(el)
 

@@ -40,7 +40,7 @@
     "regione": "Puglia"
   },
   {
-    "nome": "Barletta-Andria-Trani",
+    "nome": "Barletta Andria Trani",
     "sigla": "BT",
     "regione": "Puglia"
   },
@@ -70,7 +70,7 @@
     "regione": "Emilia-Romagna"
   },
   {
-    "nome": "Bolzano/Bozen",
+    "nome": "Bolzano",
     "sigla": "BZ",
     "regione": "Trentino-Alto Adige/Südtirol"
   },
@@ -98,11 +98,6 @@
     "nome": "Campobasso",
     "sigla": "CB",
     "regione": "Molise"
-  },
-  {
-    "nome": "Carbonia-Iglesias",
-    "sigla": "CI",
-    "regione": "Sardegna"
   },
   {
     "nome": "Caserta",
@@ -175,7 +170,7 @@
     "regione": "Puglia"
   },
   {
-    "nome": "Forlì-Cesena",
+    "nome": "Forli-Cesena",
     "sigla": "FC",
     "regione": "Emilia-Romagna"
   },
@@ -270,11 +265,6 @@
     "regione": "Basilicata"
   },
   {
-    "nome": "Medio Campidano",
-    "sigla": "VS",
-    "regione": "Sardegna"
-  },
-  {
     "nome": "Messina",
     "sigla": "ME",
     "regione": "Sicilia"
@@ -307,16 +297,6 @@
   {
     "nome": "Nuoro",
     "sigla": "NU",
-    "regione": "Sardegna"
-  },
-  {
-    "nome": "Ogliastra",
-    "sigla": "OG",
-    "regione": "Sardegna"
-  },
-  {
-    "nome": "Olbia-Tempio",
-    "sigla": "OT",
     "regione": "Sardegna"
   },
   {
@@ -400,12 +380,12 @@
     "regione": "Emilia-Romagna"
   },
   {
-    "nome": "Reggio di Calabria",
+    "nome": "Reggio Calabria",
     "sigla": "RC",
     "regione": "Calabria"
   },
   {
-    "nome": "Reggio nell'Emilia",
+    "nome": "Reggio Emilia",
     "sigla": "RE",
     "regione": "Emilia-Romagna"
   },
@@ -505,7 +485,7 @@
     "regione": "Friuli-Venezia Giulia"
   },
   {
-    "nome": "Valle d'Aosta/Vallée d'Aoste",
+    "nome": "Aosta",
     "sigla": "AO",
     "regione": "Valle d'Aosta/Vallée d'Aoste"
   },
@@ -548,5 +528,11 @@
     "nome": "Viterbo",
     "sigla": "VT",
     "regione": "Lazio"
+  },
+  {
+    "nome": "Sud Sardegna",
+    "sigla": "SU",
+    "regione": "Sardegna"
   }
+
 ]
