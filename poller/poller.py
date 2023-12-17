@@ -1,8 +1,9 @@
 import time
 
+from passport_website_query import PassportWebsiteQuery
+
 from databases.offices_db import OfficeDB
 from databases.user_db import UserDB
-from passport_website_query import PassportWebsiteQuery
 from queues.queue_producer import QueueProducer
 
 

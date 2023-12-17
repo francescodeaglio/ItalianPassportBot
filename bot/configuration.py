@@ -1,5 +1,6 @@
 import json
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
+
+from telegram import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
 from databases.user_db import UserDB
 

@@ -1,4 +1,5 @@
 import json
+
 from databases.passport_db import PassportDB
 
 

@@ -1,15 +1,10 @@
 import logging
 
+from configuration import get_intro_markup_and_text, get_province, get_region
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import (
-    Application,
-    CallbackQueryHandler,
-    CommandHandler,
-    ContextTypes,
-    ConversationHandler,
-)
+from telegram.ext import (Application, CallbackQueryHandler, CommandHandler,
+                          ContextTypes, ConversationHandler)
 
-from configuration import get_province, get_intro_markup_and_text, get_region
 from queues.queue_producer import QueueProducer
 
 user_queue = QueueProducer("new_user")

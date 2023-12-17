@@ -1,7 +1,6 @@
 import json
 
 import pika
-
 from avail_handler import AvailHandler
 
 

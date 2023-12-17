@@ -1,5 +1,4 @@
 import pika
-
 from new_user_handler import UserHandler
 
 

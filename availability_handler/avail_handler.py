@@ -1,6 +1,7 @@
 import json
 
 from telegram_utils import telegram_message_builder
+
 from databases.availabilities_db import AvailabilitiesDB
 from databases.user_db import UserDB
 from queues.queue_producer import QueueProducer
