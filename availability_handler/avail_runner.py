@@ -1,3 +1,5 @@
+import json
+
 import pika
 
 from avail_handler import AvailHandler
@@ -11,7 +13,18 @@ def main():
     avail_handler = AvailHandler()
 
     def process_new_availability_callback(ch, method, properties, body):
-        avail_handler.handle_new_availability(body)
+        entry = json.loads(body)
+
+        operation = entry["operation"]
+
+        print(entry)
+
+        if operation == "INSERT":
+            avail_handler.handle_new_availability(entry)
+        elif operation == "SET INACTIVE":
+            avail_handler.set_inactive(entry)
+        else:
+            print("Unknown operation")
         ch.basic_ack(delivery_tag=method.delivery_tag)
         # ch.basic_nack(delivery_tag=method.delivery_tag)
 

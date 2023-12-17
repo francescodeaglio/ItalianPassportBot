@@ -1,21 +1,5 @@
 import json
 from databases.passport_db import PassportDB
-from poller.passport_website_query import PassportWebsiteQuery
-
-
-def populate_office_db() -> None:
-    pwc = PassportWebsiteQuery()
-    office_db = OfficeDB()
-
-    with open("../province.json", "r", encoding="utf-8") as f:
-        options = json.load(f)
-        provinces = map(lambda element: element["sigla"], options)
-
-        for province in provinces:
-            resp = pwc.query_province(province)
-
-            for el in resp:
-                office_db.insert_new_office(el)
 
 
 class OfficeDB(PassportDB):
@@ -51,6 +35,14 @@ class OfficeDB(PassportDB):
         self.connection.commit()
         cursor.close()
 
+    def get_all_provinces(self) -> list[str]:
+        cursor = self.connection.cursor()
+        cursor.execute(
+            f"SELECT DISTINCT province_shortcut FROM office;")
+        provinces = cursor.fetchall()
+        cursor.close()
 
-if __name__ == "__main__":
-    populate_office_db()
+        return [
+            el[0] for el in provinces
+        ]
+

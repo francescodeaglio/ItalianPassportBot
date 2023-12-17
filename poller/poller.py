@@ -1,5 +1,6 @@
 import time
 
+from databases.offices_db import OfficeDB
 from databases.user_db import UserDB
 from passport_website_query import PassportWebsiteQuery
 from queues.queue_producer import QueueProducer
@@ -8,28 +9,31 @@ from queues.queue_producer import QueueProducer
 def main():
     user_db = UserDB()
     pwc = PassportWebsiteQuery()
+    office_db = OfficeDB()
 
     queue_producer = QueueProducer("new_availability")
 
     while True:
         provinces = user_db.get_all_active_provinces()
+        # provinces = office_db.get_all_provinces()
 
         print(f"Polling: {provinces}")
 
-        at_lest_one_message_sent = False
+        queue_producer.open_connection()
         for province in provinces:
+
             avail = pwc.get_availability_province(province)
 
             for entry in avail:
-                if not at_lest_one_message_sent:
-                    at_lest_one_message_sent = True
-                    queue_producer.open_connection()
+
                 queue_producer.publish_new_message(
-                    {"province": province, "availability": entry}
+                    {"province": province, "availability": entry, "operation": "INSERT"}
                 )
 
-        if at_lest_one_message_sent:
-            queue_producer.close_connection()
+            queue_producer.publish_new_message(
+                {"province": province, "availabilities": avail, "operation": "SET INACTIVE"}
+            )
+        queue_producer.close_connection()
 
         print("Sleeping")
         time.sleep(45)

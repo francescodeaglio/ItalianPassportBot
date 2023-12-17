@@ -21,7 +21,7 @@ class AvailabilitiesDB(PassportDB):
         cursor.execute(
             f"SELECT availability_id, day, hour "
             f"FROM availabilities "
-            f"WHERE office_id={office_id} and available=1"
+            f"WHERE office_id={office_id} and available='1'"
         )
         open_availabilities = cursor.fetchall()
 
@@ -37,9 +37,9 @@ class AvailabilitiesDB(PassportDB):
             if not found:
                 end_timestamp = int(time.time())
                 cursor.execute(
-                    f"UPDATE availabilities"
-                    f"SET available='0', ended_timestamp={end_timestamp} "
-                    f"WHERE availability_id = {av_id}"
+                    f"""UPDATE availabilities
+                    SET available='0', ended_timestamp={end_timestamp}
+                    WHERE availability_id = {av_id}"""
                 )
 
         self.connection.commit()
@@ -94,3 +94,46 @@ class AvailabilitiesDB(PassportDB):
             }
             for el in cursor.fetchall()
         ]
+
+    def update_slots(self, to_be_updated):
+        cursor = self.connection.cursor()
+        for entry in to_be_updated:
+            id = entry["availability_id"],
+            new_slots = entry["slots"]
+            cursor.execute(f"""
+            UPDATE availabilities
+            SET slots={new_slots}
+            WHERE availability_id={id}
+            """)
+
+        self.connection.commit()
+        cursor.close()
+
+    def set_no_longer_available(self, to_be_set_inactive):
+        cursor = self.connection.cursor()
+        for id in to_be_set_inactive:
+            end_timestamp = int(time.time())
+
+            cursor.execute(f"""
+                    UPDATE availabilities
+                    SET slots=0, available='0', ended_timestamp={end_timestamp}
+                    WHERE availability_id={id}
+                    """)
+
+        self.connection.commit()
+        cursor.close()
+
+    def get_active_availabilities(self, province):
+
+        cursor = self.connection.cursor()
+
+        cursor.execute(
+            f"""
+            SELECT availability_id, a.office_id, day, hour, slots 
+            FROM availabilities as a, office as o
+            WHERE o.office_id = a.office_id and available='1' and province_shortcut='{province}';
+            """
+        )
+        result = cursor.fetchall()
+        cursor.close()
+        return result

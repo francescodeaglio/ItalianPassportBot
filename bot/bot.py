@@ -10,7 +10,6 @@ from telegram.ext import (
 )
 
 from configuration import get_province, get_intro_markup_and_text, get_region
-from databases.user_db import UserDB
 from queues.queue_producer import QueueProducer
 
 user_queue = QueueProducer("new_user")
