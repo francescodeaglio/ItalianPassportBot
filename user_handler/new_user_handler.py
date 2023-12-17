@@ -36,7 +36,8 @@ class UserHandler:
 
         if at_lest_one_user_province:
             # send active availabilities if we are polling for the selected province
-            self._send_previous_messages_still_available(chat_id, province, join_time)
+            self._send_previous_messages_still_available(
+                chat_id, province, join_time)
 
     def _remove_user_province(self, chat_id, province):
         self.user_db_connection.remove_user_province(chat_id, province)
@@ -56,5 +57,6 @@ class UserHandler:
         message = create_summary_message(entries)
 
         self.message_queue.open_connection()
-        self.message_queue.publish_new_message({"chat_id": chat_id, "content": message})
+        self.message_queue.publish_new_message(
+            {"chat_id": chat_id, "content": message})
         self.message_queue.close_connection()

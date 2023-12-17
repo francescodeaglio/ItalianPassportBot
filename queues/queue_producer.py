@@ -22,7 +22,8 @@ class QueueProducer:
 
     def open_connection(self):
         assert self.connection is None
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
+        self.connection = pika.BlockingConnection(
+            pika.ConnectionParameters("rabbitmq"))
         self.channel = self.connection.channel()
 
     def close_connection(self):

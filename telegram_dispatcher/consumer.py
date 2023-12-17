@@ -4,7 +4,8 @@ from telegram_dispatcher.telegram_sender import TelegramSender
 
 
 def main():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host="rabbitmq"))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host="rabbitmq"))
     channel = connection.channel()
 
     sender = TelegramSender()
@@ -16,7 +17,8 @@ def main():
         else:
             ch.basic_ack(delivery_tag=method.delivery_tag)
 
-    channel.basic_consume(queue="message", on_message_callback=send_message_callback)
+    channel.basic_consume(
+        queue="message", on_message_callback=send_message_callback)
 
     print("Waiting for messages. To exit press CTRL+C")
 

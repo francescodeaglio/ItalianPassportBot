@@ -29,6 +29,7 @@ class TelegramSender:
         url = url + urllib.parse.quote_plus(message)
 
         if not requests.get(url).json()["ok"]:
-            print("Error while sending the message", message, requests.get(url).json())
+            print("Error while sending the message",
+                  message, requests.get(url).json())
             return False
         return True

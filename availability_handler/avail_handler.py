@@ -1,5 +1,3 @@
-import json
-
 from telegram_utils import telegram_message_builder
 
 from databases.availabilities_db import AvailabilitiesDB
@@ -33,7 +31,8 @@ class AvailHandler:
     def _publish_new_availability(
         self, province: str, availability_dict: dict, new_availabilities: list
     ):
-        chat_ids = self.user_db_connection.get_all_chat_ids_for_province(province)
+        chat_ids = self.user_db_connection.get_all_chat_ids_for_province(
+            province)
         message_content = telegram_message_builder(
             availability_dict, new_availabilities
         )
@@ -54,7 +53,8 @@ class AvailHandler:
         province = entry["province"]
         availabilities = entry["availabilities"]
 
-        query_results = self.avail_db_connection.get_active_availabilities(province)
+        query_results = self.avail_db_connection.get_active_availabilities(
+            province)
 
         to_be_updated = []
         to_be_set_inactive = []
@@ -88,4 +88,5 @@ class AvailHandler:
             self.avail_db_connection.update_slots(to_be_updated)
 
         if len(to_be_set_inactive) > 0:
-            self.avail_db_connection.set_no_longer_available(to_be_set_inactive)
+            self.avail_db_connection.set_no_longer_available(
+                to_be_set_inactive)

@@ -38,7 +38,7 @@ class OfficeDB(PassportDB):
 
     def get_all_provinces(self) -> list[str]:
         cursor = self.connection.cursor()
-        cursor.execute(f"SELECT DISTINCT province_shortcut FROM office;")
+        cursor.execute("SELECT DISTINCT province_shortcut FROM office;")
         provinces = cursor.fetchall()
         cursor.close()
 

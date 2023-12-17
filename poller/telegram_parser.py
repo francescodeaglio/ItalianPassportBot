@@ -13,7 +13,8 @@ def telegram_message_sender(chat_id: int, message: str) -> None:
     )
     url = url + urllib.parse.quote_plus(message)
     if not requests.get(url).json()["ok"]:
-        print("Error while sending the message", message, requests.get(url).json())
+        print("Error while sending the message",
+              message, requests.get(url).json())
 
 
 def telegram_message_builder(query_entry: dict) -> str:

@@ -26,7 +26,8 @@ def main():
 
             for entry in avail:
                 queue_producer.publish_new_message(
-                    {"province": province, "availability": entry, "operation": "INSERT"}
+                    {"province": province, "availability": entry,
+                        "operation": "INSERT"}
                 )
 
             queue_producer.publish_new_message(

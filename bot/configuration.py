@@ -38,7 +38,7 @@ def get_intro_markup_and_text(user_id: int) -> tuple[InlineKeyboardMarkup, str]:
         # more than one subscribed province
         keyboard.append(
             InlineKeyboardButton(
-                f"Rimuovi tutte le province", callback_data=f"removeall"
+                "Rimuovi tutte le province", callback_data="removeall"
             )
         )
 

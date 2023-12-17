@@ -28,7 +28,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     user = update.message.from_user
     logger.info("User %s started the conversation.", user.first_name)
 
-    reply_markup, text_message = get_intro_markup_and_text(update.message.from_user.id)
+    reply_markup, text_message = get_intro_markup_and_text(
+        update.message.from_user.id)
     await update.message.reply_text(f"{text_message}", reply_markup=reply_markup)
     # Tell ConversationHandler that we're in state `FIRST` now
     return 0
@@ -86,7 +87,8 @@ async def final_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE)
             InlineKeyboardButton(
                 "Conferma Scelta", callback_data=f"confirm:{shortcut}"
             ),
-            InlineKeyboardButton("Annulla e Ricomincia", callback_data="restart"),
+            InlineKeyboardButton("Annulla e Ricomincia",
+                                 callback_data="restart"),
         ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -197,7 +199,8 @@ def main() -> None:
                 CallbackQueryHandler(select_region, pattern="^new$"),
                 CallbackQueryHandler(final_confirmation, pattern="^province"),
                 CallbackQueryHandler(remove_province, pattern="^remove:"),
-                CallbackQueryHandler(remove_all_provinces, pattern="^removeall$"),
+                CallbackQueryHandler(remove_all_provinces,
+                                     pattern="^removeall$"),
             ],
             1: [
                 CallbackQueryHandler(start_over, pattern="^restart$"),

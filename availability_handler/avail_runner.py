@@ -6,7 +6,8 @@ from avail_handler import AvailHandler
 
 def main():
     # rabbitmq connection
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host="rabbitmq"))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host="rabbitmq"))
     channel = connection.channel()
 
     avail_handler = AvailHandler()

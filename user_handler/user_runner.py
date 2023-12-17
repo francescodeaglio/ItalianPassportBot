@@ -4,7 +4,8 @@ from new_user_handler import UserHandler
 
 def main():
     # rabbitmq connection
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host="rabbitmq"))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host="rabbitmq"))
     channel = connection.channel()
 
     avail_handler = UserHandler()
