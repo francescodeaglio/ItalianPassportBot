@@ -98,13 +98,15 @@ class AvailabilitiesDB(PassportDB):
     def update_slots(self, to_be_updated):
         cursor = self.connection.cursor()
         for entry in to_be_updated:
-            id = entry["availability_id"],
+            id = (entry["availability_id"],)
             new_slots = entry["slots"]
-            cursor.execute(f"""
+            cursor.execute(
+                f"""
             UPDATE availabilities
             SET slots={new_slots}
             WHERE availability_id={id}
-            """)
+            """
+            )
 
         self.connection.commit()
         cursor.close()
@@ -114,17 +116,18 @@ class AvailabilitiesDB(PassportDB):
         for id in to_be_set_inactive:
             end_timestamp = int(time.time())
 
-            cursor.execute(f"""
+            cursor.execute(
+                f"""
                     UPDATE availabilities
                     SET slots=0, available='0', ended_timestamp={end_timestamp}
                     WHERE availability_id={id}
-                    """)
+                    """
+            )
 
         self.connection.commit()
         cursor.close()
 
     def get_active_availabilities(self, province):
-
         cursor = self.connection.cursor()
 
         cursor.execute(

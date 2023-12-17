@@ -105,9 +105,9 @@ async def final_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 async def end_and_persist(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     if (
-            update.callback_query is None
-            or update.callback_query.from_user is None
-            or update.callback_query.data is None
+        update.callback_query is None
+        or update.callback_query.from_user is None
+        or update.callback_query.data is None
     ):
         return ConversationHandler.END
 
@@ -131,9 +131,9 @@ async def end_and_persist(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 async def remove_province(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     if (
-            update.callback_query is None
-            or update.callback_query.from_user is None
-            or update.callback_query.data is None
+        update.callback_query is None
+        or update.callback_query.from_user is None
+        or update.callback_query.data is None
     ):
         return ConversationHandler.END
 
@@ -154,11 +154,13 @@ async def remove_province(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     return ConversationHandler.END
 
 
-async def remove_all_provinces(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def remove_all_provinces(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> int:
     if (
-            update.callback_query is None
-            or update.callback_query.from_user is None
-            or update.callback_query.data is None
+        update.callback_query is None
+        or update.callback_query.from_user is None
+        or update.callback_query.data is None
     ):
         return ConversationHandler.END
 
@@ -200,7 +202,7 @@ def main() -> None:
                 CallbackQueryHandler(select_region, pattern="^new$"),
                 CallbackQueryHandler(final_confirmation, pattern="^province"),
                 CallbackQueryHandler(remove_province, pattern="^remove:"),
-                CallbackQueryHandler(remove_all_provinces, pattern="^removeall$")
+                CallbackQueryHandler(remove_all_provinces, pattern="^removeall$"),
             ],
             1: [
                 CallbackQueryHandler(start_over, pattern="^restart$"),

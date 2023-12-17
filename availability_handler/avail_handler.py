@@ -13,7 +13,6 @@ class AvailHandler:
         self.message_queue = QueueProducer("message")
 
     def handle_new_availability(self, entry: dict):
-
         print(entry)
 
         availability_dict, province = entry["availability"], entry["province"]
@@ -26,10 +25,12 @@ class AvailHandler:
         )
         print(new_availabilities)
         if len(new_availabilities) > 0:
-            self._publish_new_availability(province, availability_dict, new_availabilities)
+            self._publish_new_availability(
+                province, availability_dict, new_availabilities
+            )
 
     def _publish_new_availability(
-            self, province: str, availability_dict: dict, new_availabilities: list
+        self, province: str, availability_dict: dict, new_availabilities: list
     ):
         chat_ids = self.user_db_connection.get_all_chat_ids_for_province(province)
         message_content = telegram_message_builder(
@@ -62,15 +63,18 @@ class AvailHandler:
 
             found = False
             for polling_result in availabilities:
-                if polling_result["office_id"] == office_id and polling_result["day"] == day and polling_result[
-                    "hour"] == hour:
+                if (
+                    polling_result["office_id"] == office_id
+                    and polling_result["day"] == day
+                    and polling_result["hour"] == hour
+                ):
                     found = True
 
                     if polling_result["slots"] != slots:
                         to_be_updated.append(
                             {
                                 "availability_id": availability_id,
-                                "slots": polling_result["slots"]
+                                "slots": polling_result["slots"],
                             }
                         )
                     break

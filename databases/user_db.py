@@ -62,3 +62,13 @@ class UserDB(PassportDB):
 
         self.connection.commit()
         cursor.close()
+
+    def at_lest_one_user_province(self, province):
+        cursor = self.connection.cursor()
+
+        cursor.execute(f"SELECT count(*) FROM user WHERE province={province}")
+        result = cursor.fetchall()
+        self.connection.commit()
+        cursor.close()
+
+        return result[0][0] > 0

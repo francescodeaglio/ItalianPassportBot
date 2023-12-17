@@ -28,8 +28,15 @@ class UserHandler:
             self._remove_user_all_provinces(chat_id)
 
     def _handle_new_user_province(self, chat_id, province):
+        at_lest_one_user_province = self.user_db_connection.at_lest_one_user_province(
+            province
+        )
+
         join_time = self.user_db_connection.insert_new_user(chat_id, province)
-        self._send_previous_messages_still_available(chat_id, province, join_time)
+
+        if at_lest_one_user_province:
+            # send active availabilities if we are polling for the selected province
+            self._send_previous_messages_still_available(chat_id, province, join_time)
 
     def _remove_user_province(self, chat_id, province):
         self.user_db_connection.remove_user_province(chat_id, province)

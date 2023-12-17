@@ -21,17 +21,19 @@ def main():
 
         queue_producer.open_connection()
         for province in provinces:
-
             avail = pwc.get_availability_province(province)
 
             for entry in avail:
-
                 queue_producer.publish_new_message(
                     {"province": province, "availability": entry, "operation": "INSERT"}
                 )
 
             queue_producer.publish_new_message(
-                {"province": province, "availabilities": avail, "operation": "SET INACTIVE"}
+                {
+                    "province": province,
+                    "availabilities": avail,
+                    "operation": "SET INACTIVE",
+                }
             )
         queue_producer.close_connection()
 
