@@ -5,6 +5,7 @@ import pytz
 from passport_website_query import PassportWebsiteQuery
 
 from common.databases.user_db import UserDB
+from common.databases.offices_db import OfficeDB
 from common.queues.queue_producer import QueueProducer
 
 
@@ -26,12 +27,13 @@ def entry_bookable(entry, delay_minutes=0):
 def main():
     user_db = UserDB()
     pwc = PassportWebsiteQuery()
+    office_db = OfficeDB()
 
     queue_producer = QueueProducer("new_availability")
 
     while True:
         provinces = user_db.get_all_active_provinces()
-        # provinces = office_db.get_all_provinces()
+        #provinces = office_db.get_all_provinces()
 
         print(f"Polling: {provinces}")
 

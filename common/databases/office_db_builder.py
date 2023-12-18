@@ -8,7 +8,7 @@ def populate_office_db() -> None:
     pwc = PassportWebsiteQuery()
     office_db = OfficeDB()
 
-    with open("../../province.json", "r", encoding="utf-8") as f:
+    with open("../province.json", "r", encoding="utf-8") as f:
         options = json.load(f)
         provinces = map(lambda element: element["sigla"], options)
 
