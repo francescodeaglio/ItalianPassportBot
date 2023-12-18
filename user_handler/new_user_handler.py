@@ -1,8 +1,8 @@
 import json
 
-from databases.availabilities_db import AvailabilitiesDB
-from databases.user_db import UserDB
-from queues.queue_producer import QueueProducer
+from common.databases import AvailabilitiesDB
+from common.databases.user_db import UserDB
+from common.queues.queue_producer import QueueProducer
 from user_handler.telegram_utils import create_summary_message
 
 

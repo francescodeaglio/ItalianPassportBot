@@ -2,7 +2,7 @@ import json
 
 from telegram import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
-from databases.user_db import UserDB
+from common.databases.user_db import UserDB
 
 user_db = UserDB()
 

@@ -5,7 +5,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (Application, CallbackQueryHandler, CommandHandler,
                           ContextTypes, ConversationHandler)
 
-from queues.queue_producer import QueueProducer
+from common.queues.queue_producer import QueueProducer
 
 user_queue = QueueProducer("new_user")
 

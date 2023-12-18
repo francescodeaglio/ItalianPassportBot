@@ -1,6 +1,6 @@
 import time
 
-from databases.passport_db import PassportDB
+from common.databases.passport_db import PassportDB
 
 
 def check_existing_availability(cursor, office_id, day, hour):

@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 import pytz
 from passport_website_query import PassportWebsiteQuery
 
-from databases.user_db import UserDB
-from queues.queue_producer import QueueProducer
+from common.databases.user_db import UserDB
+from common.queues.queue_producer import QueueProducer
 
 
 def entry_bookable(entry, delay_minutes=0):

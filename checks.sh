@@ -1,6 +1,6 @@
 #!/bin/bash
 
-directories=("availability_handler" "bot" "databases" "poller" "queues" "telegram_dispatcher" "user_handler")
+directories=("availability_handler" "bot" "common" "poller" "telegram_dispatcher" "user_handler")
 
 for dir in "${directories[@]}"; do
     echo "Processing directory: $dir"

@@ -1,6 +1,6 @@
 import time
 
-from databases.passport_db import PassportDB
+from common.databases.passport_db import PassportDB
 
 
 class UserDB(PassportDB):

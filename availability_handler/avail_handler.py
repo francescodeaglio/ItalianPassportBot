@@ -1,8 +1,8 @@
 from telegram_utils import telegram_message_builder
 
-from databases.availabilities_db import AvailabilitiesDB
-from databases.user_db import UserDB
-from queues.queue_producer import QueueProducer
+from common.databases import AvailabilitiesDB
+from common.databases.user_db import UserDB
+from common.queues.queue_producer import QueueProducer
 
 
 class AvailHandler:
@@ -20,8 +20,9 @@ class AvailHandler:
         new_availabilities = self.avail_db_connection.insert_new_availability(
             availability_dict
         )
-        print(new_availabilities)
+
         if len(new_availabilities) > 0:
+            print(f"NEW AVAILABILITIES for {province}: ", new_availabilities)
             self._publish_new_availability(
                 province, availability_dict, new_availabilities, scheduled
             )

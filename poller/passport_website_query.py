@@ -29,7 +29,7 @@ def _get_headers() -> CaseInsensitiveDict:
 
 
 def parse_response(
-        available_offices: list[dict],
+    available_offices: list[dict],
 ) -> list[Optional[tuple[str, str, str]]]:
     return [
         (
@@ -70,14 +70,14 @@ class PassportWebsiteQuery:
 
     def get_availability_province(self, province: str) -> Optional[list[dict]]:
         payload = (
-                '{"comune":{"provinciaQuestura":"'
-                + province
-                + (
-                    '"},'
-                    '"pageInfo":{"maxResults":15},'
-                    '"sortInfo":{"sortList":[{"sortDirection":0,'
-                    '"sortProperty":"primaDisponibilitaResidente"}]}}'
-                )
+            '{"comune":{"provinciaQuestura":"'
+            + province
+            + (
+                '"},'
+                '"pageInfo":{"maxResults":15},'
+                '"sortInfo":{"sortList":[{"sortDirection":0,'
+                '"sortProperty":"primaDisponibilitaResidente"}]}}'
+            )
         )
 
         response = requests.post(
@@ -110,11 +110,11 @@ class PassportWebsiteQuery:
 
     def process_available_office(self, office: dict) -> Optional[list]:
         office_request = (
-                '{"sede":'
-                + json.dumps(office)
-                + ',"dataRiferimento":"'
-                + office["dataPrimaDisponibilitaResidenti"]
-                + '","indietro":false}'
+            '{"sede":'
+            + json.dumps(office)
+            + ',"dataRiferimento":"'
+            + office["dataPrimaDisponibilitaResidenti"]
+            + '","indietro":false}'
         )
 
         resp = requests.post(
@@ -144,14 +144,14 @@ class PassportWebsiteQuery:
 
     def query_province(self, province: str) -> Optional[list]:
         payload = (
-                '{"comune":{"provinciaQuestura":"'
-                + province
-                + (
-                    '"},'
-                    '"pageInfo":{"maxResults":30},'
-                    '"sortInfo":{"sortList":[{"sortDirection":0,'
-                    '"sortProperty":"primaDisponibilitaResidente"}]}}'
-                )
+            '{"comune":{"provinciaQuestura":"'
+            + province
+            + (
+                '"},'
+                '"pageInfo":{"maxResults":30},'
+                '"sortInfo":{"sortList":[{"sortDirection":0,'
+                '"sortProperty":"primaDisponibilitaResidente"}]}}'
+            )
         )
 
         response = requests.post(
