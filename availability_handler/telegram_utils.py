@@ -24,7 +24,7 @@ Indirizzo: {query_entry["address"]} {query_entry["city"]}
 
 def day_builder(day_info: dict) -> str:
     day: str = day_info["day"]
-    hour = day_info["hour"].replace(".", "\\.")
+    hour = day_info["hour"]#.replace(".", "\\.")
     slots = day_info["slots"]
 
     return f"   {day} ore {hour} Slot disponibili: {slots}"
