@@ -37,5 +37,3 @@ CREATE TABLE availabilities (
     ended_timestamp INT
 );
 
-INSERT INTO availabilities (office_id, day, hour, slots, discovered_timestamp, available) VALUES (0, "21/12/2022", "11:00", 10, 1000, 1);
-
