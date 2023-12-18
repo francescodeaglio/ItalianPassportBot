@@ -34,9 +34,21 @@ First Date: 19/12/2023
 Availability:
    19/12/2023 5 p.m. Available slots: 1
    20/12/2023 at 9 a.m. Available slots: 1
-Venue: TOPQ60 - Turin Police Headquarters
+Office: TOPQ60 - Turin Police Headquarters
 Address: Piazza Cesare Augusto, 5 TORINO
 ```
 
+## Overview
+The system is a pub-sub via Telegram. 
+The user subscribes to a list of provinces and a series of scripts take care of **discovering new availabilities** and **sending messages to all subscribed users**. 
+Furthermore, the system only sends a message **the first time a slot is discovered** and keeps track of the evolution in a database (how many slots are available, when they were discovered, when they ran out, etc.).
+
+
 ## The system
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/System.png">
+  <img alt="Text changing depending on mode. Light: 'So light!' Dark: 'So dark!'" src="./assets/passport.png">
+</picture>
+
 ![System Architecture](assets/System.png)
