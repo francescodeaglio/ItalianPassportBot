@@ -4,11 +4,13 @@
 ## The problem
 
 Obtaining a passport in Italy is challenging. In many provinces, there is no availability 
-or the first ones are several months away. Some provinces offer open days without reservations, where thousands of people show up from the early hours of the night.
+or the first ones are several months away. 
+Some provinces offer *open days* without reservations,
+where typically thousands of people show up from the early hours of the night. Read more [here](https://www.lastampa.it/torino/2023/01/28/news/passaporti_ufficio_code-12609734/) and [here](https://www.rainews.it/tgr/piemonte/video/2023/10/a-torino-passaporto-in-20-giorni-ma-e-ancora-caos-per-la-domanda--dff5c3e4-6801-405f-9cd2-fd1e7c7cbe5d.html).
 
-|                                         ![Allooo](assets/passport.png)                                          | 
-|:---------------------------------------------------------------------------------------------------------------:| 
-| **Left**: *Red regions have no available slots at the moment of polling*, **Right**: *queue during an open day* |
+|                                                                                            ![Allooo](assets/passport.png)                                                                                             | 
+|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:| 
+| **Left**: *Red regions have no available slots at the moment of polling*, **Right**: *queue during an open day. Picture from [[1]](https://www.lastampa.it/torino/2023/01/28/news/passaporti_ufficio_code-12609734/)* |
 
 
 
