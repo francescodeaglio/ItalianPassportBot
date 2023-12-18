@@ -1,9 +1,19 @@
-def telegram_message_builder(query_entry: dict, new_availabilities: list) -> str:
+def telegram_message_builder(
+    query_entry: dict, new_availabilities: list, scheduled: bool
+) -> str:
+    print("\tSENDING", query_entry)
+
     date = "/".join(query_entry["date"].split("T")[0].split("-")[::-1])
-    day_availabilities = "\n".join(
-        map(day_builder, new_availabilities))
+    day_availabilities = "\n".join(map(day_builder, new_availabilities))
+
+    if not scheduled:
+        header = "Nuova disponibilità:"
+    else:
+        start_hour = query_entry["hour"]
+        header = f"Nuova disponibilità alle ore {start_hour}:"
+
     return f"""
-Nuova disponibilità:
+{header}
 Prima Data: {date}
 Disponibilità:
 {day_availabilities}

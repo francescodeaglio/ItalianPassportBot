@@ -5,6 +5,7 @@ from databases.passport_db import PassportDB
 
 class UserDB(PassportDB):
     def get_all_chat_ids_for_province(self, province: str) -> list[int]:
+        self.connection.commit()
         cursor = self.connection.cursor()
 
         cursor.execute(f"SELECT chat_id FROM user WHERE province='{province}'")
@@ -66,7 +67,8 @@ class UserDB(PassportDB):
     def at_lest_one_user_province(self, province):
         cursor = self.connection.cursor()
 
-        cursor.execute(f"SELECT count(*) FROM user WHERE province={province}")
+        cursor.execute(
+            f"SELECT count(*) FROM user WHERE province='{province}'")
         result = cursor.fetchall()
         self.connection.commit()
         cursor.close()

@@ -17,11 +17,13 @@ def _get_headers() -> CaseInsensitiveDict:
     headers["Content-Length"] = "1319"
     headers["Origin"] = "https://passaportonline.poliziadistato.it"
     headers["Connection"] = "keep-alive"
-    headers[
-        "Cookie"
-    ] = 'citrix_ns_id=AAI7DOl-ZTvbAgUAAAAAADsvHcVrHjWAsA_aO4JnSQNdbyQqCAIPdsbls7KZPKmbOw==u-x-ZQ==FWOxMgGreAyIcQplLRU3eG4YQQA=; citrix_ns_id_.poliziadistato.it_%2F_wat=AAAAAAUUZtRKbx4C9YsAXbgbhPq2K9Ec4xgHpSXTNKvGiLg9tJhzfqkV-amB_UV1paYvDN2P40qVywmWYtSX2y4wz3o1&; JSESSIONID="6rF2Phf0gV_lhgo5YSL5wNgz5jIwpuylJ7LltIva.agpebeprd4-slave:agpebeprd4"; spid_domain_jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXV0aC5wb2xpemlhZGlzdGF0by5pdCIsImlhdCI6MTcwMjc0NTAzNiwiZXhwIjoxNzAyODMxNDM2LCJqdGkiOiJjY2VkOTgxZS0wYTY1LTQxMDYtYmUwMS1lODU5YjZkMmMzMDMiLCJzdWIiOiI4ODIxMTYxOWRjYTJhMTNjYTM5MjZmMWZhZWFjZWUxYSIsImF1ZCI6ImRvbWFpblwvbHZsLTBcL3NsbyJ9.R2_6s9Kx7dc1nOYb1dyzfVdJly5y4kEdNHF0GkfO77d8dndMlKUnOp0sSK8lSfAH1zb5UASTuufeXCT_AxZEp7RWZ9ptfzEwdJFsGjUEqXjBAG99iaW96CWMSn847J9Oghg-yvQDHG6n2syEy55kyv4rwNdfI_YG_O6H3ZWUG6frHND43BQUvIRV3KE14JoZtoH8_bROTFPNRSaY7unrvIyvaFrKop--wp0SR7Sdh6hXergJMhuHyx3lMDwp_Iaxc72k-WZPi99eoqmEDAaUm1rtNC6odhX8ituZeqXZq6Tz2bJenLdjoTqWZHBmQZCoTVA73b6nGjpffQ7r79ekUw'
-    headers["X-CSRF-TOKEN"] = "0542565d-5f8a-4712-83d3-8e61a45567a9"
     headers["Cache-Control"] = "no-cache"
+
+    with open("jwt_token", "r") as f:
+        headers["Cookie"] = f.read()
+
+    with open("xcsrf_token", "r") as f:
+        headers["X-CSRF-TOKEN"] = f.read()
 
     return headers
 
@@ -117,8 +119,6 @@ class PassportWebsiteQuery:
         resp = requests.post(
             self.query_url_agenda, headers=self.query_header, data=office_request
         )
-
-        print(json.loads(resp.content))
 
         if resp.status_code != 200:
             print(f"Error, code {resp.status_code}")

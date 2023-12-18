@@ -11,9 +11,7 @@ class AvailHandler:
         self.user_db_connection = UserDB()
         self.message_queue = QueueProducer("message")
 
-    def handle_new_availability(self, entry: dict):
-        print(entry)
-
+    def handle_new_availability(self, entry: dict, scheduled=False):
         availability_dict, province = entry["availability"], entry["province"]
 
         if availability_dict["availabilities"] is None:
@@ -25,20 +23,25 @@ class AvailHandler:
         print(new_availabilities)
         if len(new_availabilities) > 0:
             self._publish_new_availability(
-                province, availability_dict, new_availabilities
+                province, availability_dict, new_availabilities, scheduled
             )
 
     def _publish_new_availability(
-        self, province: str, availability_dict: dict, new_availabilities: list
+        self,
+        province: str,
+        availability_dict: dict,
+        new_availabilities: list,
+        scheduled: bool = False,
     ):
         chat_ids = self.user_db_connection.get_all_chat_ids_for_province(
             province)
-        message_content = telegram_message_builder(
-            availability_dict, new_availabilities
-        )
 
         if len(chat_ids) == 0:
             return
+
+        message_content = telegram_message_builder(
+            availability_dict, new_availabilities, scheduled
+        )
 
         self.message_queue.open_connection()
 
@@ -51,7 +54,7 @@ class AvailHandler:
 
     def set_inactive(self, entry):
         province = entry["province"]
-        availabilities = entry["availabilities"]
+        province_availabilities = entry["availabilities"]
 
         query_results = self.avail_db_connection.get_active_availabilities(
             province)
@@ -63,30 +66,33 @@ class AvailHandler:
             availability_id, office_id, day, hour, slots = result
 
             found = False
-            for polling_result in availabilities:
-                if (
-                    polling_result["office_id"] == office_id
-                    and polling_result["day"] == day
-                    and polling_result["hour"] == hour
-                ):
-                    found = True
+            for polling_result_office in province_availabilities:
+                if office_id != polling_result_office["office_id"]:
+                    continue
 
-                    if polling_result["slots"] != slots:
-                        to_be_updated.append(
-                            {
-                                "availability_id": availability_id,
-                                "slots": polling_result["slots"],
-                            }
-                        )
-                    break
+                for polling_result_slot in polling_result_office["availabilities"]:
+                    if (
+                        polling_result_slot["day"] == day
+                        and polling_result_slot["hour"] == hour
+                    ):
+                        found = True
+
+                        if polling_result_slot["slots"] != slots:
+                            to_be_updated.append(
+                                {
+                                    "availability_id": availability_id,
+                                    "slots": polling_result_slot["slots"],
+                                }
+                            )
+                        break
             if not found:
                 to_be_set_inactive.append(availability_id)
 
-        print(query_results, to_be_set_inactive, to_be_updated)
-
         if len(to_be_updated) > 0:
+            print("UPDATED AVAILABILITY", to_be_updated)
             self.avail_db_connection.update_slots(to_be_updated)
 
         if len(to_be_set_inactive) > 0:
+            print("SET NO LONGER AVAILABLE", to_be_set_inactive)
             self.avail_db_connection.set_no_longer_available(
                 to_be_set_inactive)

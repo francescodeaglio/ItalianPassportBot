@@ -17,10 +17,10 @@ def main():
 
         operation = entry["operation"]
 
-        print(entry)
-
         if operation == "INSERT":
-            avail_handler.handle_new_availability(entry)
+            avail_handler.handle_new_availability(entry, scheduled=False)
+        elif operation == "INSERT SCHEDULED":
+            avail_handler.handle_new_availability(entry, scheduled=True)
         elif operation == "SET INACTIVE":
             avail_handler.set_inactive(entry)
         else:

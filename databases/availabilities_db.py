@@ -65,8 +65,6 @@ class AvailabilitiesDB(PassportDB):
                     f'VALUES({office_id}, "{day}", "{hour}", {slots}, {discovered_timestamp}, 1);'
                 )
                 new_availabilities.append(availability)
-            else:
-                print("Entry already stored")
 
         self.connection.commit()
         cursor.close()
@@ -98,7 +96,7 @@ class AvailabilitiesDB(PassportDB):
     def update_slots(self, to_be_updated):
         cursor = self.connection.cursor()
         for entry in to_be_updated:
-            id = (entry["availability_id"],)
+            id = entry["availability_id"]
             new_slots = entry["slots"]
             cursor.execute(
                 f"""
