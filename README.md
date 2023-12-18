@@ -47,8 +47,7 @@ Furthermore, the system only sends a message **the first time a slot is discover
 ## The system
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/System.png">
-  <img alt="Text changing depending on mode. Light: 'So light!' Dark: 'So dark!'" src="./assets/passport.png">
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/SystemDark.png">
+  <img alt="System overview" src="./assets/SystemLight.png">
 </picture>
 
-![System Architecture](assets/System.png)
