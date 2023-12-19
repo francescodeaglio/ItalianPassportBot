@@ -54,6 +54,67 @@ Furthermore, the system only sends a message **the first time a slot is discover
   <img alt="System overview" src="./assets/SystemLight.png">
 </picture>
 
+The two main components of this system are the frontend bot and the poller. The former takes care of registering users to the provinces they are interested in, the latter handles the discovery of new availabilities.
+
+### User path
+
+Through a guided interface, the user can register for a new province or unsubscribe from previously selected ones. 
+As soon as the operation is confirmed, the bot publishes a new message on the `new_user` queue. This message contains:
+```
+{
+"chat_id": int, 
+"province": Optional[str] (None for REMOVE ALL command), 
+"operation": one of INSERT, REMOVE, REMOVE ALL
+}
+```
+
+The messages in this queue are consumed by the `new_user_handler`, which reads the message, performs the operation on the `UserDB` database and acknowledges the queue. 
+In addition, if the user subscribes **to a province that the system is actively monitoring**, a summary message is sent with all discovered and still available slots. 
+This message is produced using the `availability` and `office` databases (a join is needed to identify the province given an office ID) 
+and posted to the `message` queue. It is then read by a `telegram_dispatcher` and sent to the user.
+
+### Availability path
+
+The poller is in charge of discovering new availabilities from the police site. 
+This is done by making a POST request, obtaining a set of dates, and then making another request to obtain the times and number of places. 
+
+If the slot is **bookable** (i.e., at the time of polling, bookings for that office are open), 
+a message is posted on the `new_availabilities` queue. 
+
+If the slot is **not bookable but will be in the next 5 minutes**, a message is posted too. 
+Since these slots are much more competitive, it is better to send the message in advance rather than when 
+it is actually available. To differentiate, an available slot has the command `INSERT` while a future slot has `INSERT SCHEDULED`.
+
+Otherwise, the slot is ignored since, as it is not bookable, it will also be found in subsequent polling.
+
+Messages on the `new_availabilities` queue follow this format:
+
+```
+{
+"province": str,
+"availability": json returned by the website (hour, slots, day etc),
+"operation": "INSERT SCHEDULED" or "INSERT",
+}
+```
+
+In addition, a `SET INACTIVE` message can also be placed on this queue, which is used to update entries.
+It transmits all the entries found for the province and the consumer takes care of updating the DB.
+
+The consumer, avail_handler, reads the message and based on the operation field calls a different callback.
+The `INSERT (SCHEDULED)` operations are identical except the message sent is slightly different. 
+The script takes the entry and checks that it is not already in the database. 
+If it has not already been discovered, it finds all the users subscribed to that province and prepares a message with the date and time 
+(`INSERT` with header "New availability", `INSERT SCHEDULED` with header "New availability at X hours"). 
+The message and `chat_id` on the `message` queue is then posted.
+
+If the operation is `SET INACTIVE`, the script takes care of removing the no longer available slots 
+and updating the slots for the selected province based on the results of the query. 
+It identifies a list of `ids` that should be updated (`to_be_updated`) and a list 
+that should be recorded as no longer available (`to_be_set_inactive`) and performs the `UPDATE` operations. 
+This operation places no message on the `message` queue, but in the future the user may be given the opportunity to receive a message even when the slot stops being available.
+
+
+
 
 ## The Script
 
