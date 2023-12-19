@@ -1,5 +1,4 @@
 CREATE USER 'mysql_user'@'localhost' IDENTIFIED BY 'Pass123';
-CREATE DATABASE passport;
 
 GRANT ALL PRIVILEGES ON passport.* TO 'mysql_user'@'localhost';
 
@@ -11,8 +10,6 @@ CREATE TABLE user (
     join_time INT NOT NULL,
     primary key (chat_id, province)
 );
-
-INSERT INTO user (chat_id, province, active) values (881642944, "AO", 1);
 
 CREATE TABLE office (
     office_id INT NOT NULL PRIMARY KEY,

@@ -3,7 +3,7 @@ import json
 from common.databases import AvailabilitiesDB
 from common.databases.user_db import UserDB
 from common.queues.queue_producer import QueueProducer
-from user_handler.telegram_utils import create_summary_message
+from telegram_utils import create_summary_message
 
 
 class UserHandler:

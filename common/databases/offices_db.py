@@ -8,7 +8,8 @@ class OfficeDB(PassportDB):
     def __init__(self):
         super().__init__()
         self.province_mapping = {}
-        with open("../province.json") as f:
+
+        with open("common/province.json") as f:
             provinces = json.load(f)
             for entry in provinces:
                 self.province_mapping[entry["nome"].upper()] = entry["sigla"]

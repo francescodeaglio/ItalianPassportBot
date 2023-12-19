@@ -1,6 +1,6 @@
 import pika
 
-from telegram_dispatcher.telegram_sender import TelegramSender
+from telegram_sender import TelegramSender
 
 
 def main():

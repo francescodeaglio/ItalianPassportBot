@@ -74,14 +74,14 @@ async def get_province(query: CallbackQuery, region: str) -> None:
 
 
 def filter_region(region: str) -> filter:
-    with open("../province.json", "r", encoding="utf-8") as f:
+    with open("province.json", "r", encoding="utf-8") as f:
         data = json.load(f)
 
         return filter(lambda entry: entry["regione"] == region, data)
 
 
 def read_region() -> list:
-    with open("../province.json", "r", encoding="utf-8") as f:
+    with open("province.json", "r", encoding="utf-8") as f:
         data = json.load(f)
 
         return sorted(set(entry["regione"] for entry in data))

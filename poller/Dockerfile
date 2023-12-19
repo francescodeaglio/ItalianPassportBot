@@ -5,9 +5,12 @@ RUN apt-get update \
   build-essential default-libmysqlclient-dev \
   && pip install --no-cache-dir --upgrade pip
 
+
 WORKDIR /app
 COPY ./requirements.txt /app
 RUN pip install --no-cache-dir --requirement /app/requirements.txt
+
 COPY . /app
+#COPY ../common/ /common
 
 CMD ["python3", "databases.py"]

@@ -1,0 +1,65 @@
+version: '3.8'
+
+# By default, we disable mountain the current directory under /modyn_host. However, this might be helpful for local development.
+# For the trainer server, you additionally might want to enable the runtime and deployment option to enable the GPU in the container.
+# For the storage, you probably want to mount some volume containing the datasets.
+# For the selector, you might want to mount a volume on a fast local storage device to store the trigger training sets.
+# For storage-db and metadata-db, you might want to increase the amount of available /dev/shm and store the postgres files on a fast local disk.
+
+services:
+  database:
+    image: mysql:latest
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: passport
+      MYSQL_USER: mysql_user
+      MYSQL_PASSWORD: Pass123
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"  # RabbitMQ standard port
+      - "15672:15672"  # RabbitMQ management UI
+    volumes:
+      - ./rabbitmq-init.sh:/docker-entrypoint-initrabbitmq.d/10-init.sh
+  poller:
+    restart: on-failure
+    depends_on:
+      database:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/Poller/Dockerfile
+  availability_handler:
+    restart: on-failure
+    depends_on:
+      database:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/AvailabilityHandler/Dockerfile
+  user_handler:
+    restart: on-failure
+    depends_on:
+      database:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/UserHandler/Dockerfile
+  telegram_dispatcher:
+    restart: on-failure
+    depends_on:
+      database:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/TelegramDispatcher/Dockerfile
