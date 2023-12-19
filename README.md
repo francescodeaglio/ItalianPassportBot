@@ -1,6 +1,16 @@
 
 # Italian Passport Bot
 
+<!-- TOC -->
+* [Italian Passport Bot](#italian-passport-bot)
+  * [The problem](#the-problem)
+  * [The System](#the-system)
+    * [Overview](#overview)
+    * [User path](#user-path)
+    * [Availability path](#availability-path)
+  * [The Script](#the-script)
+<!-- TOC -->
+
 ## The problem
 
 Obtaining a passport in Italy is challenging. In many provinces, there is no availability 
