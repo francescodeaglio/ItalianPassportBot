@@ -38,16 +38,52 @@ Office: TOPQ60 - Turin Police Headquarters
 Address: Piazza Cesare Augusto, 5 TORINO
 ```
 
-## Overview
+This system is mainly an exercise to learn how to use the new tools, to be able to scale to a large number of users and availability.
+At the moment, **it is not active** because polling the police website **requires a cookie** (containing the SPID JWT) and the **X-CSRF token**, which are personal. 
+They can be easily obtained by inspecting the HTTP requests made to the site.
+The system is described below. In addition, a **standalone script** and instructions for using it are provided.
+
+## The System
+### Overview
 The system is a pub-sub via Telegram. 
 The user subscribes to a list of provinces and a series of scripts take care of **discovering new availabilities** and **sending messages to all subscribed users**. 
 Furthermore, the system only sends a message **the first time a slot is discovered** and keeps track of the evolution in a database (how many slots are available, when they were discovered, when they ran out, etc.).
-
-
-## The system
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/SystemDark.png">
   <img alt="System overview" src="./assets/SystemLight.png">
 </picture>
+
+
+## The Script
+
+The script can be used to find out availability, without the flexibility of the system described above.
+The script is more than sufficient for a strictly personal purpose.
+
+To execute the script, the tokens mentioned above are needed. Below are the instructions
+
+1. Log on to the police website https://passaportonline.poliziadistato.it/
+2. Inspect HTTP requests made after the login (typically right-click, inspect and then network section)
+3. Locate the _`Cookie`_ and `X-CSRF-TOKEN` fields in the header of the REQUESTS. See a screenshot below.
+4. Copy these tokens into the `cookie_token` and `xcsrf_token` files respectively
+5. Repeat this operation as soon as the site responds with `403` to requests
+
+
+![Tokens retrieval](assets/tokens.png)
+
+
+
+Finally, a telegram bot is needed. It is possible to create one ad-hoc, or use a specially created one. 
+The latter option requires:
+
+1. Start a conversation with this [bot](https://t.me/ModynBot)
+2. Find your chat_id (can be done by sending a message to [this bot](https://t.me/myidbot))
+3. Save your chat_id in the constant `CHAT_ID_TELEGRAM`
+
+After that, start the script `standalone_script.py` and, as soon as a spot becomes available, 
+you will receive a message from the first bot. 
+In the meantime, you can pre-fill the fields in the first section and keep a tab open on the calendar (see photo below) 
+to book as soon as the slot is discovered.
+
+![Web page](assets/page.png)
 

@@ -9,5 +9,5 @@
 /dataSources/
 /dataSources.local.xml
 /.idea
-poller/jwt_token
+poller/cookie_token
 poller/xcsrf_token

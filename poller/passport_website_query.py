@@ -19,7 +19,7 @@ def _get_headers() -> CaseInsensitiveDict:
     headers["Connection"] = "keep-alive"
     headers["Cache-Control"] = "no-cache"
 
-    with open("jwt_token", "r") as f:
+    with open("cookie_token", "r") as f:
         headers["Cookie"] = f.read()
 
     with open("xcsrf_token", "r") as f:
