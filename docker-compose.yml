@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:latest
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: passport
+      MYSQL_USER: mysql_user
+      MYSQL_PASSWORD: Pass123
+    volumes:
+      - ./common/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # RabbitMQ standard port
+      - "15672:15672"  # RabbitMQ management UI
+    volumes:
+      - ./common/init/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./common/init/definitions.json:/etc/rabbitmq/definitions.json:ro
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+  poller:
+    restart: on-failure
+    depends_on:
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/Poller/Dockerfile
+  availability_handler:
+    restart: on-failure
+    depends_on:
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/AvailabilityHandler/Dockerfile
+  user_handler:
+    restart: on-failure
+    depends_on:
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/UserHandler/Dockerfile
+  telegram_dispatcher:
+    restart: on-failure
+    depends_on:
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/TelegramDispatcher/Dockerfile
+  bot:
+    restart: on-failure
+    depends_on:
+      database:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/Bot/Dockerfile
