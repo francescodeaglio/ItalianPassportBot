@@ -14,6 +14,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 logging.getLogger("pika").propagate = False
 
+
 class AvailHandler:
     def __init__(self):
         self.avail_db_connection = AvailabilitiesDB()
@@ -31,7 +32,9 @@ class AvailHandler:
         )
 
         if len(new_availabilities) > 0:
-            logger.log(logging.INFO, f"NEW AVAILABILITIES for {province}: {new_availabilities}")
+            logger.log(
+                logging.INFO, f"NEW AVAILABILITIES for {province}: {new_availabilities}"
+            )
             self._publish_new_availability(
                 province, availability_dict, new_availabilities, scheduled
             )
@@ -99,10 +102,14 @@ class AvailHandler:
                 to_be_set_inactive.append(availability_id)
 
         if len(to_be_updated) > 0:
-            logger.log(logging.INFO, "UPDATED AVAILABILITY" + str(to_be_updated))
+            logger.log(logging.INFO, "UPDATED AVAILABILITY" +
+                       str(to_be_updated))
             self.avail_db_connection.update_slots(to_be_updated)
 
         if len(to_be_set_inactive) > 0:
-            logger.log(logging.INFO, "SET NO LONGER AVAILABLE" + str(to_be_set_inactive))
+            logger.log(
+                logging.INFO, "SET NO LONGER AVAILABLE" +
+                str(to_be_set_inactive)
+            )
             self.avail_db_connection.set_no_longer_available(
                 to_be_set_inactive)

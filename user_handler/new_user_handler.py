@@ -1,10 +1,12 @@
 import json
 import logging
 
+from telegram_utils import create_summary_message
+
 from common.databases import AvailabilitiesDB
 from common.databases.user_db import UserDB
 from common.queues.queue_producer import QueueProducer
-from telegram_utils import create_summary_message
+
 # Enable logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -12,6 +14,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pika").propagate = False
+
 
 class UserHandler:
     def __init__(self):

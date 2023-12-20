@@ -1,5 +1,4 @@
 import pika
-
 from telegram_sender import TelegramSender
 
 

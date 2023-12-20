@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 import pytz
 from passport_website_query import PassportWebsiteQuery
 
-from common.databases.user_db import UserDB
 from common.databases.offices_db import OfficeDB
+from common.databases.user_db import UserDB
 from common.queues.queue_producer import QueueProducer
 
 # Enable logging
@@ -16,6 +16,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pika").propagate = False
+
 
 def entry_bookable(entry, delay_minutes=0):
     now = datetime.now(tz=pytz.timezone("Europe/Rome")) + timedelta(
@@ -51,7 +52,8 @@ def main():
 
             for entry in avail:
                 if entry_bookable(entry):
-                    logger.log(logging.INFO, "ADDED ENTRY to NEW QUEUE" + str(entry))
+                    logger.log(
+                        logging.INFO, "ADDED ENTRY to NEW QUEUE" + str(entry))
                     queue_producer.publish_new_message(
                         {
                             "province": province,
@@ -61,7 +63,10 @@ def main():
                     )
                 elif entry_bookable(entry, delay_minutes=5):
                     # the entry will be bookable in less than 5 minutes
-                    logger.log(logging.INFO, "ADDED SCHEDULED ENTRY to NEW QUEUE" + str(entry))
+                    logger.log(
+                        logging.INFO, "ADDED SCHEDULED ENTRY to NEW QUEUE" +
+                        str(entry)
+                    )
                     queue_producer.publish_new_message(
                         {
                             "province": province,

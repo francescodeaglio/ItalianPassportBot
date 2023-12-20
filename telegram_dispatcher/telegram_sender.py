@@ -12,6 +12,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 logging.getLogger("pika").propagate = False
 
+
 class TelegramSender:
     def __init__(self):
         self.bot_token = "6655968162:AAFNVdebd2iuJ5qHXL3GY2g3fMGcz2HCn9w"
@@ -37,6 +38,9 @@ class TelegramSender:
         url = url + urllib.parse.quote_plus(message)
 
         if not requests.get(url).json()["ok"]:
-            logger.log(logging.ERROR, f"Error while sending the message {message}, {requests.get(url).json()}")
+            logger.log(
+                logging.ERROR,
+                f"Error while sending the message {message}, {requests.get(url).json()}",
+            )
             return False
         return True
