@@ -1,9 +1,18 @@
+import logging
+
 from telegram_utils import telegram_message_builder
 
 from common.databases import AvailabilitiesDB
 from common.databases.user_db import UserDB
 from common.queues.queue_producer import QueueProducer
 
+# Enable logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+
+logger = logging.getLogger(__name__)
+logging.getLogger("pika").propagate = False
 
 class AvailHandler:
     def __init__(self):
@@ -22,7 +31,7 @@ class AvailHandler:
         )
 
         if len(new_availabilities) > 0:
-            print(f"NEW AVAILABILITIES for {province}: ", new_availabilities)
+            logger.log(logging.INFO, f"NEW AVAILABILITIES for {province}: ", new_availabilities)
             self._publish_new_availability(
                 province, availability_dict, new_availabilities, scheduled
             )
@@ -90,10 +99,10 @@ class AvailHandler:
                 to_be_set_inactive.append(availability_id)
 
         if len(to_be_updated) > 0:
-            print("UPDATED AVAILABILITY", to_be_updated)
+            logger.log(logging.INFO, "UPDATED AVAILABILITY" + str(to_be_updated))
             self.avail_db_connection.update_slots(to_be_updated)
 
         if len(to_be_set_inactive) > 0:
-            print("SET NO LONGER AVAILABLE", to_be_set_inactive)
+            logger.log(logging.INFO, "SET NO LONGER AVAILABLE" + str(to_be_set_inactive))
             self.avail_db_connection.set_no_longer_available(
                 to_be_set_inactive)

@@ -1,9 +1,19 @@
 import json
+import logging
 from datetime import datetime, timedelta
 from typing import Optional
 
 import requests
 from requests.structures import CaseInsensitiveDict
+
+
+# Enable logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+
+logger = logging.getLogger(__name__)
+logging.getLogger("pika").propagate = False
 
 
 def _get_headers() -> CaseInsensitiveDict:
@@ -85,7 +95,7 @@ class PassportWebsiteQuery:
         )
 
         if response.status_code != 200:
-            print(f"Error, code {response.status_code}")
+            logger.log(logging.ERROR, f"Error, code {response.status_code}")
             return None
 
         response_offices = json.loads(response.content)["list"]
@@ -122,7 +132,7 @@ class PassportWebsiteQuery:
         )
 
         if resp.status_code != 200:
-            print(f"Error, code {resp.status_code}")
+            logger.log(logging.ERROR, f"Error, code {response.status_code}")
             return None
 
         availabilities = json.loads(resp.content)["elenco"]
@@ -159,7 +169,7 @@ class PassportWebsiteQuery:
         )
 
         if response.status_code != 200:
-            print(f"Error, code {response.status_code}")
+            logger.log(logging.ERROR, f"Error, code {response.status_code}")
             return None
 
         return json.loads(response.content)["list"]

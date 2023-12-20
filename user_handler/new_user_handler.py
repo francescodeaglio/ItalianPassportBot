@@ -1,10 +1,17 @@
 import json
+import logging
 
 from common.databases import AvailabilitiesDB
 from common.databases.user_db import UserDB
 from common.queues.queue_producer import QueueProducer
 from telegram_utils import create_summary_message
+# Enable logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
 
+logger = logging.getLogger(__name__)
+logging.getLogger("pika").propagate = False
 
 class UserHandler:
     def __init__(self):
@@ -15,7 +22,7 @@ class UserHandler:
     def handle_new_user(self, body):
         self.user_db_connection.connection.commit()
         user = json.loads(body)
-        print(user)
+        logger.log(logging.INFO, f"New User {user}")
         chat_id = user["chat_id"]
         province = user["province"]
         operation = user["operation"]
@@ -50,7 +57,6 @@ class UserHandler:
             province, join_time
         )
 
-        print(entries)
         if len(entries) == 0:
             return
 

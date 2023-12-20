@@ -1,8 +1,16 @@
 import json
+import logging
 import urllib
 
 import requests
 
+# Enable logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+
+logger = logging.getLogger(__name__)
+logging.getLogger("pika").propagate = False
 
 class TelegramSender:
     def __init__(self):
@@ -12,7 +20,7 @@ class TelegramSender:
         entry = json.loads(body)
 
         chat_id, message = entry["chat_id"], entry["content"]
-        print("SENDING TO ", chat_id, entry)
+        logger.info(logging.INFO, "SENDING TO " + str(chat_id) + str(entry))
 
         success = self._send_message(chat_id, message)
 
@@ -29,7 +37,6 @@ class TelegramSender:
         url = url + urllib.parse.quote_plus(message)
 
         if not requests.get(url).json()["ok"]:
-            print("Error while sending the message",
-                  message, requests.get(url).json())
+            logger.log(logging.ERROR, f"Error while sending the message {message}, {requests.get(url).json()}")
             return False
         return True
