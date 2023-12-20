@@ -31,7 +31,7 @@ class AvailHandler:
         )
 
         if len(new_availabilities) > 0:
-            logger.log(logging.INFO, f"NEW AVAILABILITIES for {province}: ", new_availabilities)
+            logger.log(logging.INFO, f"NEW AVAILABILITIES for {province}: {new_availabilities}")
             self._publish_new_availability(
                 province, availability_dict, new_availabilities, scheduled
             )
