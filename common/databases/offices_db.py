@@ -9,7 +9,12 @@ class OfficeDB(PassportDB):
         super().__init__()
         self.province_mapping = {}
 
-        with open("common/province.json") as f:
+        # different file structure in docker
+        path = os.path.join("common")
+        if not os.path.isdir(path):
+            path = os.path.join(os.pardir, "common")
+
+        with open(os.path.join(path, "province.json")) as f:
             provinces = json.load(f)
             for entry in provinces:
                 self.province_mapping[entry["nome"].upper()] = entry["sigla"]
