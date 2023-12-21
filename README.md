@@ -12,6 +12,7 @@ Frontend
 * [Italian Passport Bot](#italian-passport-bot)
   * [The problem](#the-problem)
   * [The System](#the-system)
+    * [Quick run](#quick-run)
     * [Overview](#overview)
     * [User path](#user-path)
     * [Availability path](#availability-path)
@@ -61,6 +62,21 @@ They can be easily obtained by inspecting the HTTP requests made to the site.
 The system is described below. In addition, a **standalone script** and instructions for using it are provided.
 
 ## The System
+
+### QuickRun
+
+To run the system, you need to obtain the tokens from the police website and then simply run the `run.sh` script.
+
+To execute the script, two authentication tokens are needed. Below are the instructions
+
+1. Log on to the police website https://passaportonline.poliziadistato.it/
+2. Inspect HTTP requests made after the login (typically right-click, inspect and then network section)
+3. Locate the _`Cookie`_ and `X-CSRF-TOKEN` fields in the header of the REQUESTS. See a screenshot at the end of this README.
+4. Copy these tokens into the `cookie_token` and `xcsrf_token` files respectively. You can find these files in the `tokens/` directory
+5. Repeat this operation as soon as the site responds with `403` to requests
+
+
+
 ### Overview
 The system is a pub-sub via Telegram. 
 The user subscribes to a list of provinces and a series of scripts take care of **discovering new availabilities** and **sending messages to all subscribed users**. 
