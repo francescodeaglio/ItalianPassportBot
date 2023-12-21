@@ -1,11 +1,4 @@
 
-Script
-1. [ ] Adapt script from jupyter
-
-Frontend
-1. [ ] Improve and containerize Streamlit container
-
-
 # Italian Passport Bot
 
 <!-- TOC -->
