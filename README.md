@@ -1,12 +1,3 @@
-**TODOS**
-
-System Side
-
-1. [ ] Persist MySQL data in a mounted directory
-2. [x] Configure user and pass for rabbitMQ. Update common dockerfile and common queue.py as well
-3. [x] Create docker container for the bot. Expose it to internet
-4. [x] Check if the dispatcher can send messages correctly
-5. [ ] Scale the solution using Kubernetes (see if docker compose can handle multiple containers of the same service)
 
 Script
 1. [ ] Adapt script from jupyter
