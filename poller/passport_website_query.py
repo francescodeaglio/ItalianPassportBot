@@ -28,10 +28,10 @@ def _get_headers() -> CaseInsensitiveDict:
     headers["Connection"] = "keep-alive"
     headers["Cache-Control"] = "no-cache"
 
-    with open("cookie_token", "r") as f:
+    with open("./tokens/cookie_token", "r") as f:
         headers["Cookie"] = f.read()
 
-    with open("xcsrf_token", "r") as f:
+    with open("./tokens/xcsrf_token", "r") as f:
         headers["X-CSRF-TOKEN"] = f.read()
 
     return headers
