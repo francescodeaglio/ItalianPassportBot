@@ -46,6 +46,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+    volumes:
+      - ./tokens/:/app/tokens
     build:
       context: .
       dockerfile: docker/Poller/Dockerfile

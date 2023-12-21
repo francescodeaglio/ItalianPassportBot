@@ -143,7 +143,7 @@ To execute the script, the tokens mentioned above are needed. Below are the inst
 1. Log on to the police website https://passaportonline.poliziadistato.it/
 2. Inspect HTTP requests made after the login (typically right-click, inspect and then network section)
 3. Locate the _`Cookie`_ and `X-CSRF-TOKEN` fields in the header of the REQUESTS. See a screenshot below.
-4. Copy these tokens into the `cookie_token` and `xcsrf_token` files respectively
+4. Copy these tokens into the `cookie_token` and `xcsrf_token` files respectively. You can find these files in the `tokens/` directory
 5. Repeat this operation as soon as the site responds with `403` to requests
 
 
