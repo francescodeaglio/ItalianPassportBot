@@ -4,13 +4,13 @@ from common.databases.passport_db import PassportDB
 
 
 class UserDB(PassportDB):
-    def get_all_chat_ids_for_province(self, province: str) -> list[int]:
+    def get_all_chat_ids_and_channels_for_province(self, province: str) -> list[tuple[int,str]]:
         self.connection.commit()
         cursor = self.connection.cursor()
 
-        cursor.execute(f"SELECT chat_id FROM user WHERE province='{province}'")
+        cursor.execute(f"SELECT chat_id, channel FROM user WHERE province='{province}'")
 
-        result = [entry[0] for entry in cursor.fetchall()]
+        result = [(entry[0], entry[1]) for entry in cursor.fetchall()]
         cursor.close()
         return result
 

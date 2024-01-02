@@ -1,4 +1,4 @@
-def telegram_message_builder(
+def _message_builder(
     query_entry: dict, new_availabilities: list, scheduled: bool
 ) -> str:
     print("\tSENDING", query_entry)

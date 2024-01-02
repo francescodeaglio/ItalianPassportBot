@@ -1,3 +1,5 @@
+import json
+
 import pika
 from telegram_sender import TelegramSender
 
@@ -7,10 +9,21 @@ def main():
         pika.ConnectionParameters(host="rabbitmq"))
     channel = connection.channel()
 
-    sender = TelegramSender()
+    telegram_sender = TelegramSender()
 
     def send_message_callback(ch, method, properties, body):
-        success = sender.send_message(body)
+        entry = json.loads(body)
+        chat_id, message, msg_channel = (
+            entry["chat_id"],
+            entry["content"],
+            entry["channel"],
+        )
+
+        if msg_channel == "TELEGRAM":
+            success = telegram_sender.send_message(message, chat_id)
+        else:
+            success = False
+
         if not success:
             ch.basic_nack(delivery_tag=method.delivery_tag)
         else:

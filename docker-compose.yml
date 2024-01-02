@@ -74,7 +74,7 @@ services:
     build:
       context: .
       dockerfile: docker/UserHandler/Dockerfile
-  telegram_dispatcher:
+  dispatcher:
     restart: on-failure
     depends_on:
       database:
@@ -83,7 +83,7 @@ services:
         condition: service_healthy
     build:
       context: .
-      dockerfile: docker/TelegramDispatcher/Dockerfile
+      dockerfile: docker/Dispatcher/Dockerfile
     deploy:
       mode: replicated
       replicas: 3

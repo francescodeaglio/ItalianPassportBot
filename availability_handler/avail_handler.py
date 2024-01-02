@@ -1,6 +1,6 @@
 import logging
 
-from telegram_utils import telegram_message_builder
+from utils import _message_builder
 
 from common.databases import AvailabilitiesDB
 from common.databases.user_db import UserDB
@@ -46,21 +46,23 @@ class AvailHandler:
         new_availabilities: list,
         scheduled: bool = False,
     ):
-        chat_ids = self.user_db_connection.get_all_chat_ids_for_province(
-            province)
+        chat_ids_and_channels = (
+            self.user_db_connection.get_all_chat_ids_and_channels_for_province(
+                province)
+        )
 
-        if len(chat_ids) == 0:
+        if len(chat_ids_and_channels) == 0:
             return
 
-        message_content = telegram_message_builder(
+        message_content = _message_builder(
             availability_dict, new_availabilities, scheduled
         )
 
         self.message_queue.open_connection()
 
-        for chat_id in chat_ids:
+        for chat_id, channel in chat_ids_and_channels:
             self.message_queue.publish_new_message(
-                {"chat_id": chat_id, "content": message_content}
+                {"chat_id": chat_id, "channel": channel, "content": message_content}
             )
 
         self.message_queue.close_connection()

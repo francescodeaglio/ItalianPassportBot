@@ -17,11 +17,8 @@ class TelegramSender:
     def __init__(self):
         self.bot_token = "6655968162:AAFNVdebd2iuJ5qHXL3GY2g3fMGcz2HCn9w"
 
-    def send_message(self, body: bytes) -> bool:
-        entry = json.loads(body)
-
-        chat_id, message = entry["chat_id"], entry["content"]
-        logger.info(logging.INFO, "SENDING TO " + str(chat_id) + str(entry))
+    def send_message(self, message: str, chat_id: int) -> bool:
+        logger.info(logging.INFO, "SENDING TO " + str(chat_id) + str(message))
 
         success = self._send_message(chat_id, message)
 
