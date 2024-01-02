@@ -16,11 +16,12 @@ logger = logging.getLogger(__name__)
 logging.getLogger("pika").propagate = False
 
 
-class UserHandler:
+class AbstractUserHandler:
     def __init__(self):
         self.avail_db_connection = AvailabilitiesDB()
         self.user_db_connection = UserDB()
         self.message_queue = QueueProducer("message")
+        self.channel = None
 
     def handle_new_user(self, body):
         self.user_db_connection.connection.commit()
@@ -38,22 +39,26 @@ class UserHandler:
             self._remove_user_all_provinces(chat_id)
 
     def _handle_new_user_province(self, chat_id, province):
+        assert self.channel is not None
         at_lest_one_user_province = self.user_db_connection.at_lest_one_user_province(
             province
         )
 
-        join_time = self.user_db_connection.insert_new_user(chat_id, province)
+        join_time = self.user_db_connection.insert_new_user(chat_id, self.channel, province)
 
         if at_lest_one_user_province:
             # send active availabilities if we are polling for the selected province
             self._send_previous_messages_still_available(
-                chat_id, province, join_time)
+                chat_id, province, join_time
+            )
 
     def _remove_user_province(self, chat_id, province):
-        self.user_db_connection.remove_user_province(chat_id, province)
+        assert self.channel is not None
+        self.user_db_connection.remove_user_province(chat_id, self.channel, province)
 
     def _remove_user_all_provinces(self, chat_id):
-        self.user_db_connection.remove_user_all_provinces(chat_id)
+        assert self.channel is not None
+        self.user_db_connection.remove_user_all_provinces(chat_id, self.channel)
 
     def _send_previous_messages_still_available(self, chat_id, province, join_time):
         entries = self.avail_db_connection.get_slots_available_before(
@@ -67,5 +72,5 @@ class UserHandler:
 
         self.message_queue.open_connection()
         self.message_queue.publish_new_message(
-            {"chat_id": chat_id, "content": message})
+            {"chat_id": chat_id, "channel":self.channel, "content": message})
         self.message_queue.close_connection()

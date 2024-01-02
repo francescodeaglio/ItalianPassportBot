@@ -1,5 +1,5 @@
 import pika
-from new_user_handler import UserHandler
+from telegram_user_handler import TelegramUserHandler
 
 
 def main():
@@ -8,7 +8,7 @@ def main():
         pika.ConnectionParameters(host="rabbitmq"))
     channel = connection.channel()
 
-    avail_handler = UserHandler()
+    avail_handler = TelegramUserHandler()
 
     def process_new_user_callback(ch, method, properties, body):
         print(body)

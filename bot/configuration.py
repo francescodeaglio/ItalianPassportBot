@@ -8,7 +8,7 @@ user_db = UserDB()
 
 
 def get_intro_markup_and_text(user_id: int) -> tuple[InlineKeyboardMarkup, str]:
-    already_subscribed = sorted(user_db.get_all_active_provinces_user(user_id))
+    already_subscribed = sorted(user_db.get_all_active_provinces_user(user_id, "TELEGRAM"))
 
     if len(already_subscribed) > 0:
         text_message = (

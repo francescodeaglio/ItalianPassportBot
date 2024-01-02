@@ -6,9 +6,10 @@ USE passport;
 
 CREATE TABLE user (
     chat_id INT NOT NULL,
+    channel VARCHAR(30) NOT NULL,
     province VARCHAR(3) NOT NULL,
     join_time INT NOT NULL,
-    primary key (chat_id, province)
+    primary key (chat_id, channel, province)
 );
 
 CREATE TABLE office (
