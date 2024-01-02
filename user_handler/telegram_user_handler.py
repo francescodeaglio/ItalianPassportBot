@@ -1,4 +1,4 @@
-from user_handler.abstract_user_handler import AbstractUserHandler
+from abstract_user_handler import AbstractUserHandler
 
 
 class TelegramUserHandler(AbstractUserHandler):
